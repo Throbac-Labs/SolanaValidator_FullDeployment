@@ -232,16 +232,16 @@ You should see "lost+found" in the /mnt/swap directory. This will stay under the
 
 Finally, we'll create the swapfile. Since it is a large file, it can take several minutes to complete, so don't be surprised when the command hangs.
 ```
-sudo dd if=/dev/nvme2n1p2 of=/swapfile bs=1M count=250K
+sudo dd if=/dev/nvme2n1p2 of=/mnt/swap/swapfile bs=1M count=250K
 ```
 Now we need to set the proper permissions and create the swapfile.
 ```
-sudo chmod 0600 /swapfile 
-sudo mkswap /swapfile 
+sudo chmod 0600 /mnt/swap/swapfile
+sudo mkswap /mnt/swap/swapfile 
 ```
 Then we add the changes to our /etc/fstab to persist them. 
 ```
-echo '/swapfile none swap sw 0 0' | sudo tee --append /etc/fstab > /dev/null 
+echo '/mnt/swap/swapfile none swap sw 0 0' | sudo tee --append /etc/fstab > /dev/null 
 ```
 Next we decrease the swapiness to make our 256GB RAM the primary target. More info [here](https://access.redhat.com/solutions/103833).
 ```
