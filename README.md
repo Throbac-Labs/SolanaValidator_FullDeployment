@@ -256,7 +256,7 @@ sudo free -h
 ```
 Phew! Deep breath. Now let's keep going.
 
-## Install Solana
+## Download & Configure Solana Cluster
 
 You can either install the prebuilt binaries or build your own binaries. This tutorial contains instructions to install the prebuilt binaries. However, there is a tutorial on building binaries from source, which you can find [here](https://github.com/agjell/sol-tutorials/blob/master/building-solana-from-source.md).
 ```
