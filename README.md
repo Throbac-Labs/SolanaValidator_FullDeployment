@@ -664,8 +664,8 @@ sudo systemctl status solana_mc.service
 sudo journalctl -u solana_mc.service -f
 ```
 Once these are all successfully up, you can log into your Grafana Cloud and add the following dashboards:
-    14738: Validator monitoring metrics dashboard. 
-    14739: Summary dashboard. 
-    13445: System monitoring metrics dashboard.
+- 14738: Validator monitoring metrics dashboard. 
+- 14739: Summary dashboard. 
+- 13445: System monitoring metrics dashboard.
 
 Alert Rules will be uploaded as an additional file to this directory. 
