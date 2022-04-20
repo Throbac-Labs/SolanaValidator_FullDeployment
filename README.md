@@ -268,7 +268,7 @@ sh -c "$(curl -sSfL https://release.solana.com/v1.10.8/install)"
 # take note of path, add to ~/.profile of non-root sudo user also
 ### ex / export PATH="/home/sol/.local/share/solana/install/active_release/bin:$PATH"
 ```
-Configure for testnet.
+Log out and log back in to user "sol". Now configure for testnet.
 ```
 solana config set --url testnet
 #take note of output
