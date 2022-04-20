@@ -466,9 +466,9 @@ To delegate stake to your vote account and thus begin actual validation, you can
 
 We'll need a few acounts to pull this off. 
 
-Account 1 - Stake Authority Account
-Account 2 - Stake Account
-Account 3 - Withdrawal Authority Account (optional, but encouraged)
+- Account 1 - Stake Authority Account
+- Account 2 - Stake Account
+- Account 3 - Withdrawal Authority Account (optional, but encouraged)
 
 Best practice would say its good to not overlap your Authorized Withdrawer with your Stake & Withdrawal Authority accounts, the accounts that will control your Stake Account. For this example we will be using the same Stake & Withrawal Authority accounts.
 
