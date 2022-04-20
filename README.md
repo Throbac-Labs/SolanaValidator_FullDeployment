@@ -18,7 +18,7 @@ End to end deployment of a testnet Solana Validator. This tutorial borrows heavi
 
 ## Server Specs
 
-Using a server rented through Lumen via the Solana Server Program
+Using a server rented through Lumen via the Solana Server Program.
 
 CPU 32 cores @ 2.9 GHz (Intel w/ AVX-512F & SHA-NI instruction sets) 
   - Storage 1 x 480 GB SDD + 2 x 1 TB NVMe 
@@ -111,7 +111,7 @@ nvme0n1     259:0    0 447.1G  0 disk
 nvme1n1     259:3    0 894.3G  0 disk 
 nvme2n1     259:4    0 894.3G  0 disk 
 ```
-#### First, we resize the OS Disk to allow more breathing room for our OS
+#### First, we resize the OS Disk to allow more breathing room for our OS.
 ```
 sudo lsblk 
 sudo growpart /dev/nvme0n1 2 
@@ -122,7 +122,7 @@ sudo lvextend -r -l +80%FREE /dev/mapper/os-root
 sudo lsblk 
 df -h
 ```
-#### Second, we partition a new disk that we will eventually use to store the Ledger Data
+#### Second, we partition a new disk that we will eventually use to store the Ledger Data.
 
 Ledgerdb Partition:
 ```
@@ -135,7 +135,7 @@ sudo mkdir /mnt/ledgerdb
 sudo mount /dev/nvme1n1p1 /mnt/ledgerdb
 sudo blkid /dev/nvme1n1p1
 ```
-Use the UUID from the above and add it to your /etc/fstab file
+Use the UUID from the above and add it to your /etc/fstab file.
 ```
 sudo nano /etc/fstab
 ------> UUID=546cd562-dab7-45dc-ac38-7f2f4021a895 /mnt/ledgerdb ext4 defaults,nofail 0 0
@@ -150,7 +150,7 @@ You should see "lost+found" in the ledgerdb directory. Now make sure the "sol" u
 ```
 sudo chown sol:sol /mnt/ledgerdb
 ```
-#### Third, we make partitions for the Accounts DB
+#### Third, we make partitions for the Accounts DB.
 
 This step is a bit more involved, as the Solana documentation recommends creating a ramdisk partition, as well as adding a significant amount of swap to help with performance. Here are some [resources](https://medium.com/swlh/using-parted-mkfs-ext4-and-etc-fstab-to-prepare-an-additional-drive-6a4b7257ed5d) we found [helpful](https://dade2.net/kb/how-to-extend-filesystem-on-linux/) when researching how best to partition our devices. Check [agjell's guide](https://github.com/agjell/sol-tutorials/blob/master/setting-up-a-solana-devnet-validator.md) for more detailed instructions on RAM disk.
 
@@ -165,7 +165,7 @@ sudo mkdir /mnt/accountsdb
 sudo mount /dev/nvme2n1p1 /mnt/accountsdb   
 sudo blkid /dev/nvme2n1p1
 ```
-Use the UUID from the above and add it to your /etc/fstab file
+Use the UUID from the above and add it to your /etc/fstab file.
 ```
 sudo nano /etc/fstab   
 ------> UUID=9dec2abf-6c82-4750-b6c6-fee190520e31 /mnt/accountsdb ext4 defaults,nofail 0 0  
@@ -180,7 +180,7 @@ You should see "lost+found" in the accountsdb directory. Now make sure the "sol"
 ```
 sudo chown sol:sol /mnt/accountsdb 
 ```
-Now its time to create the RAM disk. First, we make a directory inside our newly created partition
+Now its time to create the RAM disk. First, we make a directory inside our newly created partition.
 ```
 sudo mkdir /mnt/accountsdb/ramdisk 
 ```
@@ -193,7 +193,7 @@ Save and exit. Then we'll attempt to mount all drives to assure it's properly co
 ```
 sudo mount --all --verbose 
 ```
-Make sure the owner of the directory is "sol"
+Make sure the owner of the directory is "sol".
 ```
 sudo chown sol:sol /mnt/accountsdb/ramdisk 
 ```
@@ -217,7 +217,7 @@ sudo mkdir /mnt/swap
 sudo mount /dev/nvme2n1p2 /mnt/swap    
 sudo blkid /dev/nvme2n1p2    
 ```
-Use the UUID from the above and add it to your /etc/fstab file
+Use the UUID from the above and add it to your /etc/fstab file.
 ```
 sudo nano /etc/fstab
 ------> UUID=7adc89ed-a054-483f-857e-e1baff18e1cf /mnt/swap ext4 defaults,nofail 0 0 
@@ -234,7 +234,7 @@ Finally, we'll create the swapfile. Since it is a large file, it can take severa
 ```
 sudo dd if=/dev/nvme2n1p2 of=/swapfile bs=1M count=250K
 ```
-Now we need to set the proper permissions and create the swapfile
+Now we need to set the proper permissions and create the swapfile.
 ```
 sudo chmod 0600 /swapfile 
 sudo mkswap /swapfile 
@@ -262,13 +262,13 @@ You can either install the prebuilt binaries or build your own binaries. This tu
 ```
 ! Perform all tasks as user “sol”
 ```
-First download the binaries
+First download the binaries.
 ```
 sh -c "$(curl -sSfL https://release.solana.com/v1.10.8/install)"
 # take note of path, add to ~/.profile of non-root sudo user also
 ### ex / export PATH="/home/sol/.local/share/solana/install/active_release/bin:$PATH"
 ```
-Configure for testnet
+Configure for testnet.
 ```
 solana config set --url testnet
 #take note of output
@@ -299,7 +299,7 @@ This account pays for transaction fees and vote costs. Since it is consistently 
 solana-keygen new --outfile ~/validator-keypair.json
 solana config set --keypair ~/validator-keypair.json
 ```
-Make a transfer from your Authorized Withdrawer to your Validator Identitiy. You will have to enter your keypair and passphrase for the Authorized Withdrawer, so type carefully! (You can fund it with airdrops too)
+Make a transfer from your Authorized Withdrawer to your Validator Identitiy. You will have to enter your keypair and passphrase for the Authorized Withdrawer, so type carefully! (You can fund it with airdrops too).
 ```
 solana transfer --allow-unfunded-recipient \ 
   --fee-payer ASK \ 
@@ -321,7 +321,7 @@ solana create-vote-account ~/vote-account-keypair.json ~/validator-keypair.json 
 
 ## Create Startup Script & System Services
 
-Make sure you're logged in as user "Sol"
+Make sure you're logged in as user "Sol".
 ```
 su - sol
 nano ~/start-validator.sh
@@ -351,21 +351,21 @@ exec solana-validator \
  --skip-poh-verify \  
  --no-port-check
  ```
-Next make the start-validator.sh script executable 
+Next make the start-validator.sh script executable.
 ```
 chmod +x ~/start-validator.sh
 ```
-And create a directory for the log file as referenced above
+And create a directory for the log file as referenced above.
 ```
 mkdir ~/log
 ```
 Now for the system services.
 
-Log in as a non-root user with sudo privileges
+Log in as a non-root user with sudo privileges.
 ```
 su - "YOUR-USER"
 ```
-Create our validator.service
+Create our validator.service.
 ```
 sudo nano /etc/systemd/system/validator.service
 # validator.service file
@@ -441,7 +441,7 @@ System Tuner first, as our Validator service will use this.
 sudo systemctl enable --now systuner.service
 sudo systemctl status systuner.service
 ```
-Then the Validator Service
+Then the Validator Service.
 ```
 sudo systemctl enable --now validator.service
 sudo systemctl status validator.service
@@ -520,7 +520,7 @@ curl -OL https://go.dev/dl/go1.18.linux-amd64.tar.gz
 sha256sum go1.18.linux-amd64.tar.gz
 sudo tar -C /usr/local -xvf go1.18.linux-amd64.tar.gz
 ```
-Then we'll add the gobin path to our ~/.profile so we can enter our commands from anywhere
+Then we'll add the gobin path to our ~/.profile so we can enter our commands from anywhere.
 ```
 sudo nano ~/.profile
 export PATH=$PATH:/usr/local/go/bin
@@ -539,7 +539,7 @@ cp prometheus-2.34.0.linux-amd64/prometheus /home/USERNAME/go/bin
 cp prometheus-2.34.0.linux-amd64/prometheus.yml /home/USERNAME/monitoring
 cd monitoring
 ```
-Then we'll edit our prometheus.yml to include our remote write, as well as node_exporter and the solana-mc service, both of which we will create momentarily
+Then we'll edit our prometheus.yml to include our remote write, as well as node_exporter and the solana-mc service, both of which we will create momentarily.
 ```
 nano prometheus.yml 
 # edits (carefull of spacing and line breaks)
@@ -557,7 +557,7 @@ remote_write:
     username: USE GRAFANA CLOUD CREATED USERNAME  
     password: USE GRAFANA CLOUD CREATED PASSWORD
 ```
-Now to create the prometheus.service
+Now to create the prometheus.service.
 ```
 sudo nano /lib/systemd/system/prometheus.service
 #copy & paste
@@ -581,16 +581,16 @@ sudo systemctl start prometheus.service
 sudo systemctl status prometheus.service
 sudo journalctl -u prometheus.service -f
 ```
-Third, we'll install & configure node_exporter
+Third, we'll install & configure node_exporter.
 ```
 curl -LO https://github.com/prometheus/node_exporter/releases/download/v1.3.1/node_exporter-1.3.1.linux-amd64.tar.gz
 tar -xvf node_exporter-1.3.1.linux-amd64.tar.gz
 ```
-Copy it to the gobin
+Copy it to the gobin.
 ```
 cp node_exporter-1.3.1.linux-amd64/node_exporter ~/go/bin/node_exporter
 ```
-Create the service file
+Create the service file.
 ```
 sudo nano /lib/systemd/system/node_exporter.service
 # copy & paste
@@ -606,38 +606,38 @@ LimitNOFILE=4096
 [Install] 
 WantedBy=multi-user.target
 ```
-Start the service
+Start the service.
 ```
 sudo systemctl daemon-reload
 sudo systemctl enable node_exporter.service
 sudo systemctl start node_exporter.service
 ```
-Finally, Solana-mc. This is a service that will export information about our validator to Grafana
+Finally, Solana-mc. This is a service that will export information about our validator to Grafana.
 
-Clone the solana mission control repo and cd into it
+Clone the solana mission control repo and cd into it.
 ```
 git clone https://github.com/Chainflow/solana-mission-control
 cd solana-mission-control
 ```
-Copy the config.toml and edit it to your liking
+Copy the config.toml and edit it to your liking.
 ```
 cp example.config.toml config.toml
 nano config.toml
 #change "telegram alerts" to "false" -- we run all our alerts through grafana cloud
 ```
-Export the Solana Binary
+Export the Solana Binary.
 ```
 export SOLANA_BINARY_PATH="/home/sol/.local/share/solana/install/active_release/bin"
 ```
-Copy our config.toml to our home directory so it can be picked up by the service
+Copy our config.toml to our home directory so it can be picked up by the service.
 ```
 cp config.toml /home/USERNAME/config.toml
 ```
-Build the go script in our gobin
+Build the solana-mc script in our gobin.
 ```
 go build -o /home/USERNAME/go/bin/solana-mc
 ```
-Create the solana-mc service file
+Create the solana-mc service file.
 ```
 sudo nano /lib/systemd/system/solana_mc.service
 #copy&paste
@@ -645,10 +645,10 @@ sudo nano /lib/systemd/system/solana_mc.service
 Description=Solana-mc 
 After=network-online.target 
 [Service] 
-User=throbackevin 
+User=USERNAME
 Environment="SOLANA_BINARY_PATH=/home/sol/.local/share/solana/install/active_release/bin/solana" 
-ExecStart=/home/throbackevin/go/bin/solana-mc 
-WorkingDirectory=/home/throbackevin 
+ExecStart=/home/USERNAME/go/bin/solana-mc 
+WorkingDirectory=/home/USERNAME
 Restart=always 
 RestartSec=3 
 LimitNOFILE=4096 
