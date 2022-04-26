@@ -326,29 +326,29 @@ Make sure you're logged in as user "Sol".
 su - sol
 nano ~/start-validator.sh
 # start-validator.sh script:
-#!/bin/bash 
-exec solana-validator \ 
- --entrypoint entrypoint.testnet.solana.com:8001 \ 
- --entrypoint entrypoint2.testnet.solana.com:8001 \ 
+#!/bin/bash
+exec solana-validator \
+ --entrypoint entrypoint.testnet.solana.com:8001 \
+ --entrypoint entrypoint2.testnet.solana.com:8001 \
  --entrypoint entrypoint3.testnet.solana.com:8001 \
- --known-validator BwVDYeT9sUadojNc1JeFz66FktsUHGiFQa7LeuNxSBdh \ 
- --known-validator 5D1fNXzvv5NjV1ysLjirC4WY92RNsVH18vjmcszZd8on \ 
- --known-validator Ft5fbkqNa76vnsjYNwjDZUXoTWpP7VYm3mtsaQckQADN \ 
- --known-validator eoKpUABi59aT4rR9HGS3LcMecfut9x7zJyodWWP43YQ \ 
+ --known-validator BwVDYeT9sUadojNc1JeFz66FktsUHGiFQa7LeuNxSBdh \
+ --known-validator 5D1fNXzvv5NjV1ysLjirC4WY92RNsVH18vjmcszZd8on \
+ --known-validator Ft5fbkqNa76vnsjYNwjDZUXoTWpP7VYm3mtsaQckQADN \
+ --known-validator eoKpUABi59aT4rR9HGS3LcMecfut9x7zJyodWWP43YQ \
  --known-validator 2eCPrXeWo9Cg79cK6eyJdaCoiMDKJMPq7sAhXSP3spQk \
  --expected-genesis-hash 4uhcVJyU9pJkvQyS88uRDiswHXSCkY3zQawwpjk2NsNY \
- --dynamic-port-range 8000-8020 \ 
+ --dynamic-port-range 8000-8020 \
  --rpc-port 8899 \
  --only-known-rpc \
- --wal-recovery-mode skip_any_corrupted_record \ 
- --identity ~/validator-keypair.json \ 
- --vote-account ~/vote-account-keypair.json \ 
- --log ~/log/validator.log \ 
- --accounts /mnt/accountsdb/ramdisk \ 
- --ledger /mnt/ledgerdb/ledger \ 
+ --wal-recovery-mode skip_any_corrupted_record \
+ --identity ~/validator-keypair.json \
+ --vote-account ~/vote-account-keypair.json \
+ --log ~/log/validator.log \
+ --accounts /mnt/accountsdb/ramdisk \
+ --ledger /mnt/ledgerdb/ledger \
  --limit-ledger-size 100000000 \
  --no-poh-speed-test \
- --skip-poh-verify \  
+ --skip-poh-verify \
  --no-port-check
  ```
 Next make the start-validator.sh script executable.
@@ -369,12 +369,12 @@ Create our validator.service.
 ```
 sudo nano /etc/systemd/system/validator.service
 # validator.service file
-[Unit] 
+[Unit]
 Description=Solana Validator 
 After=network.target 
 Wants=systuner.service 
 StartLimitIntervalSec=0 
-[Service] 
+[Service]
 Type=simple 
 Restart=on-failure 
 RestartSec=1 
@@ -384,23 +384,23 @@ User=sol
 Environment=PATH=/bin:/usr/bin:/home/sol/.local/share/solana/install/active_release/bin 
 Environment=SOLANA_METRICS_CONFIG=host=https://metrics.solana.com:8086,db=testnet,u=scratch_writer,p=topsecret 
 ExecStart=/home/sol/start-validator.sh 
-[Install] 
+[Install]
 WantedBy=multi-user.target
 ```
 Save and exit. Now for our system tuner service.
 ```
 sudo nano /etc/systemd/system/systuner.service
 # systuner.service
-[Unit] 
+[Unit]
 Description=Solana System Tuner 
 After=network.target 
-[Service] 
+[Service]
 Type=simple 
 Restart=on-failure 
 RestartSec=1 
 LogRateLimitIntervalSec=0 
 ExecStart=/home/sol/.local/share/solana/install/active_release/bin/solana-sys-tuner --user sol 
-[Install] 
+[Install]
 WantedBy=multi-user.target
 ```
 Releoad the systemctl daemon
