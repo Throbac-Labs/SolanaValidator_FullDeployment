@@ -286,10 +286,10 @@ The account structure in Solana can feel complicated at first blush, so our hope
 
 Account 1: Authorized Withdrawer
 
-Do NOT store this keypair on your device. This wallet is the key to our validator, it controls all accounts, allows for key rotation, comission changes, and withdrawals of rewards.
+Do NOT store this keypair on your device. This wallet is the key to our validator, it controls all accounts, allows for key rotation, comission changes, and withdrawals of rewards. TAKE CARE TO STORE THE SEED PHRASE IN A SAFE PLACE AND DO NOT LOOSE.
 ```
 solana-keygen new --no-outfile
-solana airdrop 1 5Kd2YFmsSFctVxBTuPfupA8oCAs42kbBmFBZrYKQ8jKm (use your pubkey)
+solana airdrop 1 AUTHORIZED-WITHDRAWER-PUBLIC KEY (use the public key from above)
 ```
 
 Account 2: Validator Identity
@@ -315,7 +315,7 @@ Here's the format for designating a Vote Account:
 ```
 solana create-vote-account <ACCOUNT_KEYPAIR> <IDENTITY_KEYPAIR> <WITHDRAWER_PUBKEY> --commission <PERCENTAGE> --config <FILEPATH>
 # and our example
-solana create-vote-account ~/vote-account-keypair.json ~/validator-keypair.json 5Kd2YFmsSFctVxBTuPfupA8oCAs42kbBmFBZrYKQ8jKm --commission 10 \
+solana create-vote-account ~/vote-account-keypair.json ~/validator-keypair.json AUTHORIZED-WITHDRAWER-PUBLIC-KEY --commission 10 \
 --fee-payer ASK
 ```
 
@@ -499,7 +499,7 @@ solana stake-account stake-account.json
 To delegate your stake (make sure to select your previously created vote account):
 ```
 # format -- solana delegate-stake [FLAGS] [OPTIONS] <STAKE_ACCOUNT_ADDRESS> <VOTE_ACCOUNT_ADDRESS>
-solana delegate-stake --stake-authority ASK stake-account.json 8Jkrkcd6UCYV1PEDofdVgw7DGHwfn8CU7MeH7tfCoqu1 \ 
+solana delegate-stake --stake-authority ASK stake-account.json VOTE-ACCCOUNT-PUBLIC-KEY \ 
 --fee-payer ASK
 ```
 Check your stake account details again. Remember, there is a warm up and cool down period to staking. Once submitted, however, you should see your validator begin to submit votes + txs.
@@ -561,16 +561,16 @@ Now to create the prometheus.service.
 ```
 sudo nano /lib/systemd/system/prometheus.service
 #copy & paste
-[Unit] 
-Description=Prometheus 
-After=network-online.target 
-[Service] 
-Type=simple 
-ExecStart=/home/USERNAME/go/bin/prometheus --config.file=/home/throbackevin/monitoring/prometheus.yml 
-Restart=always 
-RestartSec=3 
-LimitNOFILE=4096 
-[Install] 
+[Unit]
+Description=Prometheus
+After=network-online.target
+[Service]
+Type=simple
+ExecStart=/home/USERNAME/go/bin/prometheus --config.file=/home/USERNAME/monitoring/prometheus.yml 
+Restart=always
+RestartSec=3
+LimitNOFILE=4096
+[Install]
 WantedBy=multi-user.target
 ```
 Save & exit. Reload the daemon and start the service.
