@@ -594,16 +594,16 @@ Create the service file.
 ```
 sudo nano /lib/systemd/system/node_exporter.service
 # copy & paste
-[Unit] 
+[Unit]
 Description=Node_exporter 
 After=network-online.target 
-[Service] 
+[Service]
 Type=simple 
 ExecStart=/home/USERNAME/go/bin/node_exporter 
 Restart=always 
 RestartSec=3 
 LimitNOFILE=4096 
-[Install] 
+[Install]
 WantedBy=multi-user.target
 ```
 Start the service.
@@ -641,10 +641,10 @@ Create the solana-mc service file.
 ```
 sudo nano /lib/systemd/system/solana_mc.service
 #copy&paste
-[Unit] 
+[Unit]
 Description=Solana-mc 
 After=network-online.target 
-[Service] 
+[Service]
 User=USERNAME
 Environment="SOLANA_BINARY_PATH=/home/sol/.local/share/solana/install/active_release/bin/solana" 
 ExecStart=/home/USERNAME/go/bin/solana-mc 
@@ -652,7 +652,7 @@ WorkingDirectory=/home/USERNAME
 Restart=always 
 RestartSec=3 
 LimitNOFILE=4096 
-[Install] 
+[Install]
 WantedBy=multi-user.target
 ```
 Reload the daemon and start the service.
