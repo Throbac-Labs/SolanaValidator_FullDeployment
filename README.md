@@ -111,6 +111,8 @@ nvme0n1     259:0    0 447.1G  0 disk
 nvme1n1     259:3    0 894.3G  0 disk 
 nvme2n1     259:4    0 894.3G  0 disk 
 ```
+ADDITIONAL DISCLAIMER: Be very careful when making changes to your /etc/fstab as incorrectly formatting it could cause your device to fail on boot. Make sure to restart the system once all files are mounted to test it out.
+
 #### First, we resize the OS Disk to allow more breathing room for our OS.
 ```
 sudo lsblk 
@@ -140,7 +142,8 @@ Use the UUID from the above and add it to your /etc/fstab file.
 sudo nano /etc/fstab
 ------> UUID=546cd562-dab7-45dc-ac38-7f2f4021a895 /mnt/ledgerdb ext4 defaults,nofail 0 0
 ```
-Save & exit. Then unmount and remount the drive to make sure everything is configured properly.
+Save & exit. Then unmount and remount the drive to make sure everything is configured properly. This should simulate what would happen on reboot to assure you won't run into any issues.
+
 ```
 sudo umount /mnt/ledgerdb
 sudo mount -a
@@ -325,6 +328,8 @@ Make sure you're logged in as user "Sol".
 ```
 su - sol
 nano ~/start-validator.sh
+```
+```
 # start-validator.sh script:
 #!/bin/bash
 exec solana-validator \
@@ -368,6 +373,8 @@ su - "YOUR-USER"
 Create our validator.service.
 ```
 sudo nano /etc/systemd/system/validator.service
+```
+```
 # validator.service file
 [Unit]
 Description=Solana Validator 
@@ -390,6 +397,8 @@ WantedBy=multi-user.target
 Save and exit. Now for our system tuner service.
 ```
 sudo nano /etc/systemd/system/systuner.service
+```
+```
 # systuner.service
 [Unit]
 Description=Solana System Tuner 
@@ -560,6 +569,8 @@ remote_write:
 Now to create the prometheus.service.
 ```
 sudo nano /lib/systemd/system/prometheus.service
+```
+```
 #copy & paste
 [Unit]
 Description=Prometheus
@@ -593,6 +604,8 @@ cp node_exporter-1.3.1.linux-amd64/node_exporter ~/go/bin/node_exporter
 Create the service file.
 ```
 sudo nano /lib/systemd/system/node_exporter.service
+```
+```
 # copy & paste
 [Unit]
 Description=Node_exporter 
@@ -640,6 +653,8 @@ go build -o /home/USERNAME/go/bin/solana-mc
 Create the solana-mc service file.
 ```
 sudo nano /lib/systemd/system/solana_mc.service
+```
+```
 #copy&paste
 [Unit]
 Description=Solana-mc 
