@@ -46,12 +46,11 @@ Next we'll create the firewall. Be carefull to properly add all the allow rules 
 
 ```
 sudo ufw allow "OpenSSH" \
-sudo ufw allow 80 \
 sudo ufw allow from MY-LOCAL-IP \ # (optional)
 sudo ufw allow 8000:8020/udp \
 sudo ufw allow 8000/tcp \
 sudo ufw allow 8001/tcp \
-sudo ufw allow 8899/tcp \
+sudo ufw allow 8899/tcp \ ## only if serving RPC requests. ideally reverse proxy them through an authenticated web server.
 sudo ufw allow 8900/tcp \
 sudo ufw enable \
 sudo ufw status 
