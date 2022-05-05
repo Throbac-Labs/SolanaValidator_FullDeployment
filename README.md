@@ -45,7 +45,6 @@ sudo adduser sol
 Next we'll create the firewall. Be carefull to properly add all the allow rules (particularly SSH) before enabling the firewall so as not to lock yourself out of the server. Our firewall rules are based on the minimum necessary to operate a validator. Certain ports are specific to testnet, so take care to update based on your desired cluster.
 
 ```
-sudo ufw allow 22/tcp \
 sudo ufw allow "OpenSSH" \
 sudo ufw allow 80 \
 sudo ufw allow from MY-LOCAL-IP \ # (optional)
